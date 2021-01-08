@@ -1,5 +1,14 @@
 const httpStatus = require('http-status');
+const JWT = require('jsonwebtoken');
+
 const User = require('../models/user.model');
+
+const signToken = (user) => JWT.sign({
+  iss: 'CodeWork',
+  sub: user.id,
+  iat: new Date().getTime(), // current time
+  exp: new Date().setDate(new Date().getDate() + 1), // current time + 1 day ahead
+}, 'codeworkauthentication');
 
 exports.signUp = async (req, res, next) => {
   try {
@@ -18,10 +27,12 @@ exports.signUp = async (req, res, next) => {
 
     // Respond with token
     if (!savedUser) throw Error('Something went wrong when saving user ');
+
+    // Create token
+    const token = signToken(newUser);
+
     res.status(httpStatus.OK)
-      .json({
-        user: 'created',
-      });
+      .json({ token });
   } catch (error) {
     next(error);
   }
