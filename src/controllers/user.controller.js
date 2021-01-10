@@ -39,6 +39,17 @@ exports.signUp = async (req, res, next) => {
   }
 };
 
+exports.signIn = async (req, res, next) => {
+  try {
+    // Generate token
+    const token = signToken(req.user);
+    res.status(httpStatus.OK)
+      .json({ token });
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.secret = async (req, res, next) => {
   console.log('I managed to get here!');
   res.json({ secret: 're-scr' });
