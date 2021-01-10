@@ -2,13 +2,14 @@ const httpStatus = require('http-status');
 const JWT = require('jsonwebtoken');
 
 const User = require('../models/user.model');
+const { jwtSecret } = require('../config/vars');
 
 const signToken = (user) => JWT.sign({
   iss: 'CodeWork',
   sub: user.id,
   iat: new Date().getTime(), // current time
   exp: new Date().setDate(new Date().getDate() + 1), // current time + 1 day ahead
-}, 'codeworkauthentication');
+}, jwtSecret);
 
 exports.signUp = async (req, res, next) => {
   try {
@@ -36,4 +37,9 @@ exports.signUp = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+exports.secret = async (req, res, next) => {
+  console.log('I managed to get here!');
+  res.json({ secret: 're-scr' });
 };

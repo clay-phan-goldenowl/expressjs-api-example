@@ -15,4 +15,5 @@ module.exports = {
     },
   },
   morganLogFormat: process.env.NODE_ENV === 'production' ? 'combined' : 'dev',
+  jwtSecret: 'codeworkauthentication',
 };
